@@ -24,6 +24,28 @@ app.get('/messages', (req, res) => {
     res.send(messages)
 })
 
+app.get('/users', async (req, res) => {
+    try{
+        var users = await User.find({}, '-password -__v')
+        res.send(users);
+    }
+    catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
+app.get('/profile/:id', async (req, res) => {
+    try{
+        var user = await User.findById(req.params.id, '-password -__v')
+        res.send(user);
+    }
+    catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
 app.post('/register', (req, res) => {
     var userData = req.body
     var user = new User(userData)
